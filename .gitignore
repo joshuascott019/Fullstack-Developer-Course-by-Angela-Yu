@@ -1,7 +1,47 @@
+# Node.js-related files and folders
 node_modules/
-*.env
-# Ignore all node_modules folders in subdirectories
 **/node_modules/
 
-# Ignore all .env files in subdirectories
+# Environment variable files
+.env
 **/*.env
+
+# Logs
+logs/
+**/logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+jspm_packages/
+**/jspm_packages/
+
+# Build outputs
+dist/
+**/dist/
+build/
+**/build/
+
+# IDE and editor folders
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+**/tmp/
+temp/
+**/temp/
+*.tmp
+*.temp
+
+# Others
+coverage/
+**/coverage/
