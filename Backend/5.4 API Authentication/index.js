@@ -1,6 +1,7 @@
 import express from 'express';
 import axios from 'axios';
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 
 const app = express();
 const port = 3000;
