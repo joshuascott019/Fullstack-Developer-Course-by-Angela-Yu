@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const app = express();
 const port = 3000;
-const API_URL = 'https://secrets-api.appbrewery.com/';
+const API_URL = 'https://secrets-api.appbrewery.com';
 
 //TODO 1: Fill in your values for the 3 types of auth.
 const yourUsername = 'joshuas019';
@@ -41,7 +41,7 @@ app.get('/basicAuth', async (req, res) => {
     });
   */
   try {
-    const result = await axios.get(API_URL + '/all?pages=2', {
+    const result = await axios.get(API_URL + '/all?page=2', {
       auth: {
         username: yourUsername,
         password: yourPassword,
@@ -60,7 +60,7 @@ app.get('/apiKey', async (req, res) => {
   try {
     const result = await axios.get(API_URL + '/filter', {
       params: {
-        score: yourUsername,
+        score: 5,
         apiKey: yourAPIKey,
       },
     });
