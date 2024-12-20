@@ -80,7 +80,6 @@ app.post('/delete-secret', async (req, res) => {
   try {
     const response = await axios.delete(
       API_URL + '/secrets/' + searchId,
-      req.body,
       config
     );
     res.render('index.ejs', { content: JSON.stringify(response.data) });
