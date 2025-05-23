@@ -1,33 +1,53 @@
-import express from "express";
-import bodyParser from "body-parser";
+import express from 'express';
+import bodyParser from 'body-parser';
+import pg from 'pg';
 
 const app = express();
 const port = 3000;
 
+const db = new pg.Client({
+  user: 'postgres',
+  host: 'localhost',
+  database: 'World',
+  password: '135KgsH1h343',
+  port: 5432,
+});
+
+db.connect();
+
 let quiz = [
-  { country: "France", capital: "Paris" },
-  { country: "United Kingdom", capital: "London" },
-  { country: "United States of America", capital: "New York" },
+  { country: 'France', capital: 'Paris' },
+  { country: 'United Kingdom', capital: 'London' },
+  { country: 'United States of America', capital: 'New York' },
 ];
+
+db.query('SELECT * FROM capitals', (err, res) => {
+  if (err) {
+    console.error('Error executing query', err.stack);
+  } else {
+    quiz = res.rows;
+  }
+  db.end();
+});
 
 let totalCorrect = 0;
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));
+app.use(express.static('public'));
 
 let currentQuestion = {};
 
 // GET home page
-app.get("/", async (req, res) => {
+app.get('/', async (req, res) => {
   totalCorrect = 0;
   await nextQuestion();
   console.log(currentQuestion);
-  res.render("index.ejs", { question: currentQuestion });
+  res.render('index.ejs', { question: currentQuestion });
 });
 
 // POST a new post
-app.post("/submit", (req, res) => {
+app.post('/submit', (req, res) => {
   let answer = req.body.answer.trim();
   let isCorrect = false;
   if (currentQuestion.capital.toLowerCase() === answer.toLowerCase()) {
@@ -37,7 +57,7 @@ app.post("/submit", (req, res) => {
   }
 
   nextQuestion();
-  res.render("index.ejs", {
+  res.render('index.ejs', {
     question: currentQuestion,
     wasCorrect: isCorrect,
     totalScore: totalCorrect,
