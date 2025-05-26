@@ -24,7 +24,7 @@ app.get('/', async (req, res) => {
   result.rows.forEach((country) => {
     countries.push(country.country_code);
   });
-  console.log(result.rows);
+  // console.log(result.rows);
   res.render('index.ejs', { countries: countries, total: countries.length });
   db.end();
 });
