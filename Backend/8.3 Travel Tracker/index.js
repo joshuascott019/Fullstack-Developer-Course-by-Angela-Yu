@@ -17,15 +17,40 @@ db.connect();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-// Home Page
-app.get('/', async (req, res) => {
+async function checkVisited() {
   const result = await db.query('SELECT country_code FROM visited_countries');
   let countries = [];
   result.rows.forEach((country) => {
     countries.push(country.country_code);
   });
+  return countries;
+}
+
+// Home Page
+app.get('/', async (req, res) => {
+  const countries = await checkVisited();
   res.render('index.ejs', { countries: countries, total: countries.length });
-  db.end();
+});
+
+// INSERT new country
+app.post('/add', async (req, res) => {
+  const input = req.body['country'];
+
+  const result = await db.query(
+    'SELECT country_code FROM countries WHERE country_name = $1',
+    [input]
+  );
+  console.log(result.rows);
+
+  if (result.rows.length !== 0) {
+    const data = result.rows[0];
+    const countryCode = data.country_code;
+
+    await db.query('INSERT INTO visited_countries (country_code) VALUES ($1)', [
+      countryCode,
+    ]);
+    res.redirect('/');
+  }
 });
 
 app.listen(port, () => {
